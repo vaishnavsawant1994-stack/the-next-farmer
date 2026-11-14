@@ -1,0 +1,14 @@
+import pg from 'pg';
+import { createServer } from 'node:http';
+import { createApp } from './app.mjs';
+const url=process.env.DATABASE_URL;
+if(!url)throw new Error('DATABASE_URL is required. Configure a separate development PostgreSQL database and run npm run db:migrate.');
+const origin=process.env.PUBLIC_ORIGIN||'http://127.0.0.1:8787';
+const site=new URL(origin);
+const pool=new pg.Pool({connectionString:url,max:10,connectionTimeoutMillis:5000,ssl:process.env.PGSSL==='true'?{rejectUnauthorized:true}:undefined});
+await pool.query('SELECT 1');
+const app=createApp({pool,origin,allowRegistration:process.env.ALLOW_REGISTRATION==='true'});
+const server=createServer(app);
+server.listen(Number(process.env.PORT||site.port||8787),process.env.HOST||'127.0.0.1',()=>console.log('The Next Farmer database-backed pilot on '+origin));
+const close=async()=>{server.close();await pool.end();};
+process.once('SIGINT',close);process.once('SIGTERM',close);
