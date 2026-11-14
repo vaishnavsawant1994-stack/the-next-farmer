@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { areaToAcres, cropFinancials, money, nonNegative } from '../src/math.js';
+import { areaToAcres, cropFinancials, money, moneyPerKg, nonNegative } from '../src/math.js';
 import { emptyData, validateData, loadData, saveData, sampleData } from '../src/store.js';
 
 const crop = { id: 'c1', expectedYieldKg: 800, expectedPricePerKg: 18, actualRevenue: null };
@@ -50,3 +50,5 @@ test('invalid backups are rejected and prior data preserved', () => {
   assert.deepEqual(result.data, emptyData());
 });
 test('currency formatting for Indian rupees', () => assert.match(money(120000), /1,20,000/));
+
+test('per-kg break even keeps paise precision', () => assert.match(moneyPerKg(3500 / 800), /4\.38/));
