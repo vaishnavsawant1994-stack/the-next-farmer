@@ -1,61 +1,62 @@
 # The Next Farmer / द नेक्स्ट फार्मर
 
-**A farmer-first, multilingual agricultural planning companion for India.**
+**Farmer-first digital agriculture for India.** A Marathi/English planning and record-keeping pilot; designed to grow into a trustworthy crop-to-sale ecosystem.
 
-[Master requirements](docs/FARMER_REQUIREMENTS_MASTER_BLUEPRINT.md) · [Roadmap](docs/PRODUCT_ROADMAP.md) · [MVP guide](docs/MVP_IMPLEMENTATION.md)
+> **Status — v0.2 development:** Code is available for an offline prototype and a PostgreSQL-backed, authenticated pilot. Neither is production-approved. No farmer field study, agronomist validation, live deployment or real-database acceptance is claimed.
 
-## What is available today
+## What works in code
 
-A functional, **local-first pilot** of the web application (English and Marathi) featuring:
+| Feature | Offline v0.1 | Database-backed v0.2 |
+|---|---|---|
+| Dashboard, farms, crop seasons, expense/profit calculator | Browser-local storage | Per-account PostgreSQL APIs |
+| Marathi + English UI | Yes | Yes |
+| Crop guidance | Six unreviewed educational checklists, visibly labelled | Only independently reviewed, published guides (none auto-published) |
+| Expert questions / response | No | Human expert queue and sourced responses |
+| Authentication | No | Email/password, scrypt, HttpOnly server sessions, CSRF checks |
+| Backup/export | Local JSON export/import | **Not implemented yet** (production blocker) |
 
-- **Dashboard:** farm and crop summaries, active seasons and recent expenses.
-- **Farm records:** create, edit and delete fields, area in acres/guntha/hectares, irrigation source.
-- **Crop seasons:** create and edit crop records linked to farms, sowing dates, stages, expected yield and farmer-entered selling-price assumptions.
-- **Crop guidance:** six educational checklists (onion, tomato, wheat, maize, pomegranate and general crops), clearly marked as awaiting expert review.
-- **Farm finances:** expenses by crop, projected or actual revenue, net returns, cost categories and break-even price.
-- **Data portability:** sample records, JSON export/import and browser-data deletion.
-
-## Run the app
-
-Requires Node.js **20 or newer**. No dependency installation, API key, external service or database needed.
-
+## Quick start: offline demonstration
+Requires Node.js >=20 and does not require dependencies:
 ```bash
-git clone https://github.com/vaishnavsawant1994-stack/the-next-farmer.git
-cd the-next-farmer
 npm run dev
 ```
+Open http://127.0.0.1:5173 and **do not enter sensitive farmer data**. Data is local to that browser; it does not automatically transfer to server mode.
 
-Open **http://127.0.0.1:5173/** in a browser.
+## Quick start: database-backed development pilot
+Requires Node.js >=20 and a **separate PostgreSQL 15+ development database**.
+```bash
+npm install
+cp .env.example .env
+# Edit .env to use your own disposable development database credentials.
+node --env-file=.env server/migrate.mjs
+node --env-file=.env server/index.mjs
+```
+Visit http://127.0.0.1:8787. By default public registration is **disabled**. For isolated local tests, temporarily set `ALLOW_REGISTRATION=true` to create initial accounts and switch it off after the controlled test.
 
-To run the ten automated calculation, validation and UI smoke tests plus syntax checks:
+For Windows PowerShell:
+```powershell
+Copy-Item .env.example .env
+node --env-file=.env server/migrate.mjs
+node --env-file=.env server/index.mjs
+```
 
+For the independent crop guide workflow, create separate expert and editor accounts, then assign privileged roles locally with `node --env-file=.env server/grant-role.mjs user@example.com expert` (or `editor`). Only a different editor/admin can approve an author's submitted guide.
+
+## Testing
 ```bash
 npm run check
 ```
+The local suite includes the original finance/browser checks and new API/security checks; the PostgreSQL integration test requires `TNF_TEST_DATABASE_URL` and an initialized disposable database. GitHub CI has a PostgreSQL service for that integration test. **Passing a mocked API test is not evidence of live database acceptance.**
 
-## Important pilot limitations
+## Reference documentation
+- [Master requirements blueprint](docs/FARMER_REQUIREMENTS_MASTER_BLUEPRINT.md)
+- [Farmer journeys & personas](docs/FARMER_JOURNEYS_AND_PERSONAS.md)
+- [Research and validation plan](docs/FIELD_RESEARCH_AND_VALIDATION.md)
+- [Development roadmap](docs/PRODUCT_ROADMAP.md)
+- [Data safety and trust](docs/DATA_SAFETY_AND_TRUST.md)
+- [Official source register](docs/OFFICIAL_SOURCES.md)
+- [Offline MVP implementation](docs/MVP_IMPLEMENTATION.md)
+- [Secure pilot implementation, APIs and safety limitations](docs/SECURE_PILOT_IMPLEMENTATION.md)
 
-- **Local browser storage only.** No account authentication, encryption, server database, cloud sync or multi-user access. Do not enter sensitive farmer identity, confidential land or banking information. Clearing browser storage can erase your data; export a backup first.
-- **No live market prices, weather, government scheme integration or AI crop diagnosis.** The selling price is a user-entered assumption.
-- **Crop guidance is not yet locally validated by a qualified agronomist.** Do not use it to make chemical application or emergency decisions.
-- The application passes syntax, calculation/data-model and lightweight UI event-flow tests locally. **Browser end-to-end testing and real-farmer usability validation are pending.** The development server is not hardened for internet exposure.
-
-See [MVP implementation details](docs/MVP_IMPLEMENTATION.md) for full functionality, acceptance examples and limitations.
-
-## Project mission
-
-Help farmers plan crops, keep reliable records and understand farm economics; expand into trusted local guidance and expert services only after field research and qualified review.
-
-**Proposed pilot region:** Satana / Nashik, Maharashtra. National expansion is a future goal.
-
-## Project documentation
-
-- [Farmer Requirements Master Blueprint](docs/FARMER_REQUIREMENTS_MASTER_BLUEPRINT.md)
-- [Farmer Journeys and Personas](docs/FARMER_JOURNEYS_AND_PERSONAS.md)
-- [Farmer Research and Validation Plan](docs/FIELD_RESEARCH_AND_VALIDATION.md)
-- [Product Roadmap](docs/PRODUCT_ROADMAP.md)
-- [Privacy, Safety and Trust](docs/DATA_SAFETY_AND_TRUST.md)
-- [Official Source Register](docs/OFFICIAL_SOURCES.md)
-- [MVP Implementation](docs/MVP_IMPLEMENTATION.md)
-
-**Status:** Functional local-first pilot committed to `main`; not yet a secure deployed production app. Field research, expert validation, backend architecture and production acceptance remain open.
+## Data safety
+This repository is **public**. Never commit `.env`, database passwords, private farmer records, Aadhaar numbers, bank details, land-record originals or identifying interview transcripts. This is **not yet a secure public SaaS**: password recovery, email verification, farmer data deletion/export, distributed abuse protection, verified expert credentials, monitoring, backup/restore, production security review and safe agronomic content publication remain pending. Do not deploy the development server publicly.
