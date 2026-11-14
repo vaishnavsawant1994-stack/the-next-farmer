@@ -27,7 +27,7 @@ npm run dev
 
 Open **http://127.0.0.1:5173/** in a browser.
 
-To run the eight automated calculation and validation tests plus syntax checks:
+To run the nine automated calculation, validation and UI smoke tests plus syntax checks:
 
 ```bash
 npm run check
@@ -38,7 +38,7 @@ npm run check
 - **Local browser storage only.** No account authentication, encryption, server database, cloud sync or multi-user access. Do not enter sensitive farmer identity, confidential land or banking information. Clearing browser storage can erase your data; export a backup first.
 - **No live market prices, weather, government scheme integration or AI crop diagnosis.** The selling price is a user-entered assumption.
 - **Crop guidance is not yet locally validated by a qualified agronomist.** Do not use it to make chemical application or emergency decisions.
-- The application passes syntax and calculation/data-model tests locally. **Browser end-to-end testing and real-farmer usability validation are pending.** The development server is not hardened for internet exposure.
+- The application passes syntax, calculation/data-model and lightweight UI event-flow tests locally. **Browser end-to-end testing and real-farmer usability validation are pending.** The development server is not hardened for internet exposure.
 
 See [MVP implementation details](docs/MVP_IMPLEMENTATION.md) for full functionality, acceptance examples and limitations.
 
