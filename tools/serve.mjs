@@ -1,7 +1,8 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, sep, extname } from 'node:path';
-const ROOT = resolve(import.meta.dirname, '..');
+import { fileURLToPath } from 'node:url';
+const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
 const port = Number(process.env.PORT || 5173);
 const server = createServer(async (req, res) => {
