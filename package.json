@@ -1,0 +1,13 @@
+{
+  "name": "the-next-farmer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-first Indian farmer planning pilot",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/app.js && node --check src/store.js && node --check src/math.js && node --check src/content.js && npm test"
+  },
+  "engines": {"node": ">=20"}
+}
