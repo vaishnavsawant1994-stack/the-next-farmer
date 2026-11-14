@@ -1,16 +1,33 @@
-name: MVP quality checks
+name: The Next Farmer CI
 on:
   push:
     branches: [main]
   pull_request:
+permissions:
+  contents: read
 jobs:
   tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: tnf_ci
+          POSTGRES_PASSWORD: tnf_ci_pass
+          POSTGRES_DB: tnf_ci_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U tnf_ci" --health-interval=10s --health-timeout=5s --health-retries=5
+    env:
+      DATABASE_URL: postgresql://tnf_ci:tnf_ci_pass@127.0.0.1:5432/tnf_ci_test
+      TNF_TEST_DATABASE_URL: postgresql://tnf_ci:tnf_ci_pass@127.0.0.1:5432/tnf_ci_test
+      NODE_ENV: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run db:migrate
       - run: npm run check
