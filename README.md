@@ -27,7 +27,7 @@ npm run dev
 
 Open **http://127.0.0.1:5173/** in a browser.
 
-To run the nine automated calculation, validation and UI smoke tests plus syntax checks:
+To run the ten automated calculation, validation and UI smoke tests plus syntax checks:
 
 ```bash
 npm run check
