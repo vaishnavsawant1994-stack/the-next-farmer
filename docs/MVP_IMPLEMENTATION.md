@@ -9,7 +9,7 @@
 - Transparent distinction between projected values, actual revenue entered by the farmer and unknown revenue.
 - Six illustrative crop/decision checklists (onion, tomato, wheat, maize, pomegranate, general). These are education only **and have not been locally agronomist-validated**.
 - Browser localStorage persistence with JSON backup export/import and deletion control; example data only when user explicitly loads it.
-- Node.js no-dependency dev server, strict resource path handling, Content Security Policy and Node built-in tests.
+- Node.js no-dependency dev server, strict resource path handling, Content Security Policy and Node built-in tests, including a lightweight UI event/DOM smoke test.
 - GitHub Actions check workflow (on push/PR).
 
 ## Running locally
@@ -26,7 +26,7 @@ Open http://127.0.0.1:5173/ in a normal browser.
 npm run check
 ```
 
-Tests use the built-in Node.js test runner. To publish a static preview, serve the root folder as static files over HTTPS. `tools/serve.mjs` is a **local development server** and is not recommended as a public production server.
+Nine tests currently pass (eight calculation/validation tests and one application-flow smoke test) using the built-in Node.js test runner. To publish a static preview, serve the root folder as static files over HTTPS. `tools/serve.mjs` is a **local development server** and is not recommended as a public production server.
 
 ## Limitations (not production ready)
 - **Not a cloud app**: no backend, authentication, multi-device sync, encrypted database or multi-farmer separation. Records are stored in the current browser under this site's origin. Anyone with access to that browser profile may be able to see them.
