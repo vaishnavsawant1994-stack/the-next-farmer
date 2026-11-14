@@ -54,3 +54,7 @@ export function dateLabel(date, language = 'en') {
   const parsed = new Date(date + 'T12:00:00');
   return Number.isNaN(parsed.getTime()) ? '—' : parsed.toLocaleDateString(language === 'mr' ? 'mr-IN' : 'en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 }
+
+export function moneyPerKg(amount) {
+  return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount || 0);
+}
