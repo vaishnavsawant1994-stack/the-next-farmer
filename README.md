@@ -59,3 +59,7 @@ Help farmers plan crops, keep reliable records and understand farm economics; ex
 - [MVP Implementation](docs/MVP_IMPLEMENTATION.md)
 
 **Status:** Functional local-first pilot committed to `main`; not yet a secure deployed production app. Field research, expert validation, backend architecture and production acceptance remain open.
+
+## Detailed project documentation
+
+See the [**Project Handbook**](docs/PROJECT_HANDBOOK.md) for this repository's intended users, actual source scope, features, architecture, local setup, known limitations, security constraints, qualification requirements and prioritized future work. Source documentation is not proof of live production completeness.
